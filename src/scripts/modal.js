@@ -13,7 +13,6 @@ export function closeModal(modalElement) {
 // Закрываем при ESC
 function escapeCloseModal(event) {
   if (event.key === "Escape") {
-    console.log(event);
     closeModal(document.querySelector(".popup_is-opened"));
   }
 }
