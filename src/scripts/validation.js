@@ -65,8 +65,11 @@ const hasInvalidInput = (inputList) => {
 function toggleButtonState(inputList, buttonElement, popupSelectors) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(popupSelectors.inactiveButtonClass);
+    buttonElement.disabled = true;
   } else {
     buttonElement.classList.remove(popupSelectors.inactiveButtonClass);
+    buttonElement.disabled = false;
+
   }
 }
 
@@ -90,6 +93,8 @@ export const clearValidation = (formElement, popupSelectors) => {
   const buttonElement = formElement.querySelector(
     popupSelectors.submitButtonSelector
   );
+  buttonElement.classList.add(popupSelectors.inactiveButtonClass);
+  buttonElement.disabled = true;
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, popupSelectors);
   });

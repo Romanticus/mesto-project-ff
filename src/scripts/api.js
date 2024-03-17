@@ -32,8 +32,8 @@ export const setUserInfo = (name, description) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      name: `${name}`,
-      about: `${description}`,
+      name: name,
+      about: description,
     }),
   }).then(getResponseData);
 };
@@ -43,8 +43,8 @@ export const sendNewCard = (name, link) => {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({
-      name: `${name}`,
-      link: `${link}`,
+      name: name,
+      link: link,
     }),
   }).then(getResponseData);
 };

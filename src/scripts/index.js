@@ -39,13 +39,12 @@ const editProfileFormButtonConfirm =
 const updateAvatarButtonConfirm =
   updateAvatarForm.querySelector(".popup__button");
 
-let myUserId;
+let myId;
 
 const handlerEventCard = {
   likeCard: handlerLikeCard,
   deleteCard: handlerDeleteCard,
   openImage: handlerOpenImageCard,
-  myId: "",
 };
 
 const validationConfig = {
@@ -103,7 +102,7 @@ function handleAddCardFormSubmit(evt) {
   addCardButtonConfirm.textContent = "Сохранение...";
   sendNewCard(cardForm["place-name"].value, cardForm.link.value)
     .then((data) => {
-      cardList.prepend(createCard(data, handlerEventCard));
+      cardList.prepend(createCard(data, handlerEventCard,myId));
     })
     .catch((err) => {
       console.log(err);
@@ -138,37 +137,23 @@ closePopupButtons.forEach((item) =>
   })
 );
 
-function disableButtonForm(formElement, popupSelectors) {
-  const buttonElement = formElement.querySelector(
-    popupSelectors.submitButtonSelector
-  );
-  if (!buttonElement.classList.contains(popupSelectors.inactiveButtonClass)) {
-    buttonElement.classList.toggle(popupSelectors.inactiveButtonClass);
-  }
-}
-
 // Открываем изменение профиля
 editPopupOpenButton.addEventListener("click", () => {
   clearValidation(editProfileForm, validationConfig);
   fillEditForm();
-  disableButtonForm(newCardForm, validationConfig);
   openModal(editModal);
 });
 
 // Открываем меню добавления карточки
 newCardOpenButton.addEventListener("click", () => {
   clearValidation(newCardForm, validationConfig);
-  disableButtonForm(newCardForm, validationConfig);
   openModal(newCardModal);
   newCardForm.reset();
 });
 
 profileAvatarButton.addEventListener("click", () => {
-  // console.log(updateAvatarModal,updateAvatarForm);
   clearValidation(updateAvatarForm, validationConfig);
-  disableButtonForm(updateAvatarForm, validationConfig);
   openModal(updateAvatarModal);
-  console.log();
   updateAvatarForm.reset();
 });
 
@@ -179,10 +164,10 @@ enableValidation(validationConfig);
 
 Promise.all([getInitialCards(), getUserInfo()])
   .then(([resInitCard, resUserInfo]) => {
-    handlerEventCard.myId = resUserInfo._id;
+    myId = resUserInfo._id;
     fillProfile(resUserInfo.name, resUserInfo.about, resUserInfo.avatar);
     resInitCard.forEach((card) => {
-      cardList.append(createCard(card, handlerEventCard));
+      cardList.append(createCard(card, handlerEventCard,myId));
     });
   })
   .catch((err) => {
